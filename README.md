@@ -1,178 +1,83 @@
-# OpenAI Agents SDK
+# 🛡️ Reenactment Agent
 
-The OpenAI Agents SDK is a lightweight yet powerful framework for building multi-agent workflows. It is provider-agnostic, supporting the OpenAI Responses and Chat Completions APIs, as well as 100+ other LLMs.
+An OpenAI-powered multi-agent system designed to help historical reenactors build accurate military kits from specific time periods and regions. This system guides users from choosing a persona to sourcing historically accurate gear, complete with museum references and vetted vendors.
 
-<img src="https://cdn.openai.com/API/docs/images/orchestration.png" alt="Image of the Agents Tracing UI" style="max-height: 803px;">
+---
 
-### Core concepts:
+## 🔧 Project Features
 
-1. [**Agents**](https://openai.github.io/openai-agents-python/agents): LLMs configured with instructions, tools, guardrails, and handoffs
-2. [**Handoffs**](https://openai.github.io/openai-agents-python/handoffs/): A specialized tool call used by the Agents SDK for transferring control between agents
-3. [**Guardrails**](https://openai.github.io/openai-agents-python/guardrails/): Configurable safety checks for input and output validation
-4. [**Tracing**](https://openai.github.io/openai-agents-python/tracing/): Built-in tracking of agent runs, allowing you to view, debug and optimize your workflows
+- **Persona Selector Agent**: Helps users narrow down their historical role (e.g., 14th-century French archer, 15th-century English knight).
+- **Kit Recommender Agent**: Generates a detailed gear list based on selected persona.
+- **Reference Finder Agent**: Finds museum artifacts and period illustrations for each piece of gear.
+- **Vendor Finder Agent**: Recommends respected, community-endorsed vendors or searches for options when no known supplier is found.
 
-Explore the [examples](examples) directory to see the SDK in action, and read our [documentation](https://openai.github.io/openai-agents-python/) for more details.
+---
 
-## Get started
-
-1. Set up your Python environment
-
-```
-python -m venv env
-source env/bin/activate
-```
-
-2. Install Agents SDK
-
-```
-pip install openai-agents
-```
-
-For voice support, install with the optional `voice` group: `pip install 'openai-agents[voice]'`.
-
-## Hello world example
-
-```python
-from agents import Agent, Runner
-
-agent = Agent(name="Assistant", instructions="You are a helpful assistant")
-
-result = Runner.run_sync(agent, "Write a haiku about recursion in programming.")
-print(result.final_output)
-
-# Code within the code,
-# Functions calling themselves,
-# Infinite loop's dance.
-```
-
-(_If running this, ensure you set the `OPENAI_API_KEY` environment variable_)
-
-(_For Jupyter notebook users, see [hello_world_jupyter.py](examples/basic/hello_world_jupyter.py)_)
-
-## Handoffs example
-
-```python
-from agents import Agent, Runner
-import asyncio
-
-spanish_agent = Agent(
-    name="Spanish agent",
-    instructions="You only speak Spanish.",
-)
-
-english_agent = Agent(
-    name="English agent",
-    instructions="You only speak English",
-)
-
-triage_agent = Agent(
-    name="Triage agent",
-    instructions="Handoff to the appropriate agent based on the language of the request.",
-    handoffs=[spanish_agent, english_agent],
-)
-
-
-async def main():
-    result = await Runner.run(triage_agent, input="Hola, ¿cómo estás?")
-    print(result.final_output)
-    # ¡Hola! Estoy bien, gracias por preguntar. ¿Y tú, cómo estás?
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
-## Functions example
-
-```python
-import asyncio
-
-from agents import Agent, Runner, function_tool
-
-
-@function_tool
-def get_weather(city: str) -> str:
-    return f"The weather in {city} is sunny."
-
-
-agent = Agent(
-    name="Hello world",
-    instructions="You are a helpful agent.",
-    tools=[get_weather],
-)
-
-
-async def main():
-    result = await Runner.run(agent, input="What's the weather in Tokyo?")
-    print(result.final_output)
-    # The weather in Tokyo is sunny.
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
-## The agent loop
-
-When you call `Runner.run()`, we run a loop until we get a final output.
-
-1. We call the LLM, using the model and settings on the agent, and the message history.
-2. The LLM returns a response, which may include tool calls.
-3. If the response has a final output (see below for more on this), we return it and end the loop.
-4. If the response has a handoff, we set the agent to the new agent and go back to step 1.
-5. We process the tool calls (if any) and append the tool responses messages. Then we go to step 1.
-
-There is a `max_turns` parameter that you can use to limit the number of times the loop executes.
-
-### Final output
-
-Final output is the last thing the agent produces in the loop.
-
-1.  If you set an `output_type` on the agent, the final output is when the LLM returns something of that type. We use [structured outputs](https://platform.openai.com/docs/guides/structured-outputs) for this.
-2.  If there's no `output_type` (i.e. plain text responses), then the first LLM response without any tool calls or handoffs is considered as the final output.
-
-As a result, the mental model for the agent loop is:
-
-1. If the current agent has an `output_type`, the loop runs until the agent produces structured output matching that type.
-2. If the current agent does not have an `output_type`, the loop runs until the current agent produces a message without any tool calls/handoffs.
-
-## Common agent patterns
-
-The Agents SDK is designed to be highly flexible, allowing you to model a wide range of LLM workflows including deterministic flows, iterative loops, and more. See examples in [`examples/agent_patterns`](examples/agent_patterns).
-
-## Tracing
-
-The Agents SDK automatically traces your agent runs, making it easy to track and debug the behavior of your agents. Tracing is extensible by design, supporting custom spans and a wide variety of external destinations, including [Logfire](https://logfire.pydantic.dev/docs/integrations/llms/openai/#openai-agents), [AgentOps](https://docs.agentops.ai/v1/integrations/agentssdk), [Braintrust](https://braintrust.dev/docs/guides/traces/integrations#openai-agents-sdk), [Scorecard](https://docs.scorecard.io/docs/documentation/features/tracing#openai-agents-sdk-integration), and [Keywords AI](https://docs.keywordsai.co/integration/development-frameworks/openai-agent). For more details about how to customize or disable tracing, see [Tracing](http://openai.github.io/openai-agents-python/tracing), which also includes a larger list of [external tracing processors](http://openai.github.io/openai-agents-python/tracing/#external-tracing-processors-list).
-
-## Development (only needed if you need to edit the SDK/examples)
-
-0. Ensure you have [`uv`](https://docs.astral.sh/uv/) installed.
+## 🧱 Project Structure
 
 ```bash
-uv --version
+reenactment-agent/
+├── agents/
+│   ├── persona_selector.py         # Selects a persona based on user input
+│   ├── kit_recommender.py          # Outputs kit list for that persona
+│   ├── reference_finder.py         # Finds visual/museum references
+│   ├── supplier_recommender.py     # Finds suppliers for each kit item
+│
+├── tools/
+│   ├── suggest_persona.py
+│   ├── generate_kit.py
+│   ├── fetch_references.py
+│   ├── recommend_suppliers.py
+│
+├── data/
+│   └── supplier_list.json          # Source for known RAG vendors
+│
+├── runner.py                      # Orchestrates multi-agent handoffs
+├── README.md                      # You're reading this
 ```
 
-1. Install dependencies
+---
 
+## 🚀 Getting Started
+
+1. **Install dependencies**:
 ```bash
-make sync
+pip install openai pydantic
 ```
 
-2. (After making changes) lint/test
-
-```
-make tests  # run tests
-make mypy   # run typechecker
-make lint   # run linter
+2. **Run the system**:
+```bash
+python runner.py
 ```
 
-## Acknowledgements
+---
 
-We'd like to acknowledge the excellent work of the open-source community, especially:
+## 🧠 How It Works
 
--   [Pydantic](https://docs.pydantic.dev/latest/) (data validation) and [PydanticAI](https://ai.pydantic.dev/) (advanced agent framework)
--   [MkDocs](https://github.com/squidfunk/mkdocs-material)
--   [Griffe](https://github.com/mkdocstrings/griffe)
--   [uv](https://github.com/astral-sh/uv) and [ruff](https://github.com/astral-sh/ruff)
+1. **User Input**: User provides century, region, and role.
+2. **Agent Chain**:
+   - `PersonaSelectorAgent` ➝ chooses a persona
+   - `KitRecommenderAgent` ➝ suggests a kit
+   - `ReferenceFinderAgent` ➝ returns museum links and images
+   - `VendorFinderAgent` ➝ provides a list of vendors or searches new ones
 
-We're committed to continuing to build the Agents SDK as an open source framework so others in the community can expand on our approach.
+---
+
+## 📌 Future Enhancements
+
+- FastAPI or Streamlit frontend
+- Vision input (upload a picture of your kit for feedback)
+- Multi-lingual support
+- Checklist export to PDF
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first.
+
+---
+
+## 📜 License
+
+MIT License

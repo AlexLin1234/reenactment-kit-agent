@@ -1,38 +1,83 @@
-# Financial Research Agent Example
+# 🛡️ Reenactment Agent
 
-This example shows how you might compose a richer financial research agent using the Agents SDK. The pattern is similar to the `research_bot` example, but with more specialized sub‑agents and a verification step.
+An OpenAI-powered multi-agent system designed to help historical reenactors build accurate military kits from specific time periods and regions. This system guides users from choosing a persona to sourcing historically accurate gear, complete with museum references and vetted vendors.
 
-The flow is:
+---
 
-1. **Planning**: A planner agent turns the end user’s request into a list of search terms relevant to financial analysis – recent news, earnings calls, corporate filings, industry commentary, etc.
-2. **Search**: A search agent uses the built‑in `WebSearchTool` to retrieve terse summaries for each search term. (You could also add `FileSearchTool` if you have indexed PDFs or 10‑Ks.)
-3. **Sub‑analysts**: Additional agents (e.g. a fundamentals analyst and a risk analyst) are exposed as tools so the writer can call them inline and incorporate their outputs.
-4. **Writing**: A senior writer agent brings together the search snippets and any sub‑analyst summaries into a long‑form markdown report plus a short executive summary.
-5. **Verification**: A final verifier agent audits the report for obvious inconsistencies or missing sourcing.
+## 🔧 Project Features
 
-You can run the example with:
+- **Persona Selector Agent**: Helps users narrow down their historical role (e.g., 14th-century French archer, 15th-century English knight).
+- **Kit Recommender Agent**: Generates a detailed gear list based on selected persona.
+- **Reference Finder Agent**: Finds museum artifacts and period illustrations for each piece of gear.
+- **Vendor Finder Agent**: Recommends respected, community-endorsed vendors or searches for options when no known supplier is found.
+
+---
+
+## 🧱 Project Structure
 
 ```bash
-python -m examples.financial_research_agent.main
+reenactment-agent/
+├── agents/
+│   ├── persona_selector.py         # Selects a persona based on user input
+│   ├── kit_recommender.py          # Outputs kit list for that persona
+│   ├── reference_finder.py         # Finds visual/museum references
+│   ├── supplier_recommender.py     # Finds suppliers for each kit item
+│
+├── tools/
+│   ├── suggest_persona.py
+│   ├── generate_kit.py
+│   ├── fetch_references.py
+│   ├── recommend_suppliers.py
+│
+├── data/
+│   └── supplier_list.json          # Source for known RAG vendors
+│
+├── runner.py                      # Orchestrates multi-agent handoffs
+├── README.md                      # You're reading this
 ```
 
-and enter a query like:
+---
 
-```
-Write up an analysis of Apple Inc.'s most recent quarter.
-```
+## 🚀 Getting Started
 
-### Starter prompt
-
-The writer agent is seeded with instructions similar to:
-
-```
-You are a senior financial analyst. You will be provided with the original query
-and a set of raw search summaries. Your job is to synthesize these into a
-long‑form markdown report (at least several paragraphs) with a short executive
-summary. You also have access to tools like `fundamentals_analysis` and
-`risk_analysis` to get short specialist write‑ups if you want to incorporate them.
-Add a few follow‑up questions for further research.
+1. **Install dependencies**:
+```bash
+pip install openai pydantic
 ```
 
-You can tweak these prompts and sub‑agents to suit your own data sources and preferred report structure.
+2. **Run the system**:
+```bash
+python runner.py
+```
+
+---
+
+## 🧠 How It Works
+
+1. **User Input**: User provides century, region, and role.
+2. **Agent Chain**:
+   - `PersonaSelectorAgent` ➝ chooses a persona
+   - `KitRecommenderAgent` ➝ suggests a kit
+   - `ReferenceFinderAgent` ➝ returns museum links and images
+   - `VendorFinderAgent` ➝ provides a list of vendors or searches new ones
+
+---
+
+## 📌 Future Enhancements
+
+- FastAPI or Streamlit frontend
+- Vision input (upload a picture of your kit for feedback)
+- Multi-lingual support
+- Checklist export to PDF
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first.
+
+---
+
+## 📜 License
+
+MIT License
