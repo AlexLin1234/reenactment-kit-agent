@@ -1,7 +1,7 @@
 # agents/reference_finder.py
 from pydantic import BaseModel
 from openai import Agent
-from tools.fetch_references import fetch_references
+from reenactment_agent.tools.fetch_references import fetch_references
 
 class ReferenceData(BaseModel):
     image_url: str

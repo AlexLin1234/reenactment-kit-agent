@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from agents import Agent
-from tools.suggest_persona import suggest_persona
+from reenactment_agent.tools.suggest_persona import suggest_persona
 
 class PersonaSuggestion(BaseModel):
     persona: str
