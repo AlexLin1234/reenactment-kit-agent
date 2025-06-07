@@ -9,6 +9,7 @@ An OpenAI-powered multi-agent system designed to help historical reenactors buil
 - **Persona Selector Agent**: Helps users narrow down their historical role (e.g., 14th-century French archer, 15th-century English knight).
 - **Kit Recommender Agent**: Generates a detailed gear list based on selected persona.
 - **Reference Finder Agent**: Finds museum artifacts and period illustrations for each piece of gear.
+- **Reference Sources**: Pulls images directly from museum APIs such as the Metropolitan Museum of Art and the Royal Armouries.
 - **Vendor Finder Agent**: Recommends respected, community-endorsed vendors or searches for options when no known supplier is found.
 
 ---
