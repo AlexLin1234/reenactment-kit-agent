@@ -1,0 +1,7 @@
+# Runtime dependencies
+
+fastapi
+uvicorn
+openai>=1.76.0
+pydantic>=2.10,<3
+requests>=2.0,<3
