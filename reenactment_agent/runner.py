@@ -1,17 +1,18 @@
 # runner.py
 from openai import Runner
-from agents.persona_selector import persona_selector_agent
-from agents.kit_recommender import kit_recommender_agent
-from agents.reference_finder import reference_finder_agent
-from agents.supplier_recommender import supplier_recommender_agent
+from .agents.persona_selector import persona_selector_agent
+from .agents.kit_recommender_agent import kit_recommender_agent
+from .agents.reference_finder_agent import reference_finder_agent
+from .agents.supplier_recommender_agent import supplier_recommender_agent
 
 
-def run_pipeline():
-    # Step 1: Select persona
+def run_pipeline(century: str, region: str, role: str):
+    """Run the multi-agent pipeline for a given persona."""
+
     persona_input = {
-        "century": "15th",
-        "region": "Western Europe",
-        "role": "knight"
+        "century": century,
+        "region": region,
+        "role": role,
     }
     persona = Runner.run_sync(
         agent=persona_selector_agent,
@@ -55,4 +56,4 @@ def run_pipeline():
 
 
 if __name__ == "__main__":
-    result = run_pipeline()
+    result = run_pipeline("15th", "Western Europe", "knight")

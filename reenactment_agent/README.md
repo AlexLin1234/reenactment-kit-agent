@@ -16,7 +16,7 @@ An OpenAI-powered multi-agent system designed to help historical reenactors buil
 ## 🧱 Project Structure
 
 ```bash
-reenactment-agent/
+reenactment_agent/
 ├── agents/
 │   ├── persona_selector.py         # Selects a persona based on user input
 │   ├── kit_recommender.py          # Outputs kit list for that persona

@@ -16,7 +16,7 @@ An OpenAI-powered multi-agent system designed to help historical reenactors buil
 ## 🧱 Project Structure
 
 ```bash
-reenactment-agent/
+reenactment_agent/
 ├── agents/
 │   ├── persona_selector.py         # Selects a persona based on user input
 │   ├── kit_recommender.py          # Outputs kit list for that persona
@@ -34,6 +34,11 @@ reenactment-agent/
 │
 ├── runner.py                      # Orchestrates multi-agent handoffs
 ├── README.md                      # You're reading this
+frontend/
+├── public/index.html              # React entry point
+├── src/App.js                     # React components
+└── package.json                   # React dependencies
+app.py                             # FastAPI server
 ```
 
 ---
@@ -42,12 +47,17 @@ reenactment-agent/
 
 1. **Install dependencies**:
 ```bash
-pip install openai pydantic
+pip install fastapi uvicorn openai pydantic
 ```
 
-2. **Run the system**:
+2. **Start the API server**:
 ```bash
-python runner.py
+uvicorn app:app --reload
+```
+
+3. **Start the React frontend**:
+```bash
+cd frontend && npm install && npm start
 ```
 
 ---
