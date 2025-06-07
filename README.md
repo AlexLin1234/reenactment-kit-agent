@@ -48,7 +48,7 @@ app.py                             # FastAPI server
 
 1. **Install dependencies**:
 ```bash
-pip install fastapi uvicorn openai pydantic
+pip install fastapi uvicorn openai pydantic openai-agents
 ```
 
 2. **Start the API server**:

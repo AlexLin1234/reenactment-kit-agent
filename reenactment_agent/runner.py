@@ -1,5 +1,5 @@
 # runner.py
-from openai import Runner
+from agents import Runner
 from .agents.persona_selector import persona_selector_agent
 from .agents.kit_recommender_agent import kit_recommender_agent
 from .agents.reference_finder_agent import reference_finder_agent

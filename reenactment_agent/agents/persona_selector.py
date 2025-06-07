@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from openai import Agent
+from agents import Agent
 from tools.suggest_persona import suggest_persona
 
 class PersonaSuggestion(BaseModel):

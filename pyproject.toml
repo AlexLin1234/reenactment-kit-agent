@@ -1,5 +1,5 @@
 [project]
-name = "openai-agents"
+name = "reenactment-kit-agent"
 version = "0.0.15"
 description = "OpenAI Agents SDK"
 readme = "README.md"
@@ -15,6 +15,7 @@ dependencies = [
     "types-requests>=2.0, <3",
     "mcp>=1.8.0, <2; python_version >= '3.10'",
     "tee>=0.0.3",
+    "openai-agents>=0.0.15",
 ]
 classifiers = [
     "Typing :: Typed",
