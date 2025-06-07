@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from openai import Agent
+from agents import Agent
 from reenactment_agent.tools.generate_kit import generate_kit_list
 
 class KitList(BaseModel):
