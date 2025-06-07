@@ -1,7 +1,7 @@
 # agents/supplier_recommender.py
 from pydantic import BaseModel
 from openai import Agent
-from tools.recommend_suppliers import recommend_suppliers
+from reenactment_agent.tools.recommend_suppliers import recommend_suppliers
 
 class SupplierList(BaseModel):
     suppliers: list[str]
