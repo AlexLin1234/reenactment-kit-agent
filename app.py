@@ -1,3 +1,6 @@
+import os
+
+import openai
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
@@ -14,6 +17,8 @@ class PipelineRequest(BaseModel):
 
 class ZipRequest(BaseModel):
     references: dict[str, dict[str, str]]
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = FastAPI()
 

@@ -1,9 +1,14 @@
 # runner.py
+import os
+
+import openai
 from agents import Runner
 from .agents.persona_selector import persona_selector_agent
 from .agents.kit_recommender_agent import kit_recommender_agent
 from .agents.reference_finder_agent import reference_finder_agent
 from .agents.supplier_recommender_agent import supplier_recommender_agent
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 def run_pipeline(century: str, region: str, role: str):
