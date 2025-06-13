@@ -51,12 +51,17 @@ app.py                             # FastAPI server
 pip install fastapi uvicorn openai pydantic openai-agents
 ```
 
-2. **Start the API server**:
+2. **Set your OpenAI API key**:
+```bash
+export OPENAI_API_KEY=your-key-here
+```
+
+3. **Start the API server**:
 ```bash
 uvicorn app:app --reload
 ```
 
-3. **Start the React frontend**:
+4. **Start the React frontend**:
 ```bash
 cd frontend && npm install && npm start
 ```

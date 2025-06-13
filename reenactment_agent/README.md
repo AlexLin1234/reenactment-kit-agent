@@ -46,7 +46,12 @@ reenactment_agent/
 pip install openai pydantic
 ```
 
-2. **Run the system**:
+2. **Set your OpenAI API key**:
+```bash
+export OPENAI_API_KEY=your-key-here
+```
+
+3. **Run the system**:
 ```bash
 python runner.py
 ```
